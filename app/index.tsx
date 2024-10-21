@@ -14,6 +14,12 @@ const index = () => {
         console.log(todoAdd);
     }
 
+const deleteTodo = (index: number) => {
+    console.log('Deleted : ', index)
+    todoAdd.splice(index , 1)
+    setTodoAdd([...todoAdd])
+}
+
     return (
         <SafeAreaView style={styles.container}>
 
@@ -32,14 +38,14 @@ const index = () => {
 
             {todoAdd.length > 0 ? (<FlatList
                 data={todoAdd}
-                renderItem={({ item }) => (
+                renderItem={({ item, index }) => (
                     <View>
                         <Text>{item}</Text>
                         <TouchableOpacity style={styles.button} >
                             <Text>Edit</Text>
                         </TouchableOpacity>
 
-                        <TouchableOpacity style={styles.button} >
+                        <TouchableOpacity style={styles.button} onPress={() => deleteTodo(index)} >
                             <Text>Delete</Text>
                         </TouchableOpacity>
                     </View >
