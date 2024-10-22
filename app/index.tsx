@@ -85,7 +85,7 @@ const index = () => {
                     transparent={true}
                     visible={modalVisible}
                     onRequestClose={() => {
-                        Alert.alert('Modal has been closed.');
+                        // Alert.alert('Modal has been closed.');
                         setModalVisible(!modalVisible);
                     }}>
                     <View style={styles.centeredView}>
@@ -97,11 +97,20 @@ const index = () => {
                                 value={updatedTodo}
                                 placeholder='Enter Updated Todo...'
                             />
-                            <TouchableOpacity
-                                style={[styles.buttons, styles.buttonClose]} activeOpacity={0.5}
-                                onPress={() => editTodo(index)}>
-                                <Text style={styles.textStyle}>Updated</Text>
-                            </TouchableOpacity>
+                            <View style={styles.btnsContainers}>
+                                <TouchableOpacity
+                                    style={[styles.buttons, styles.buttonClose]} activeOpacity={0.5}
+                                    onPress={() => editTodo(index)}>
+                                    <Text style={styles.textStyle}>Updated</Text>
+                                </TouchableOpacity>
+
+                                <TouchableOpacity
+                                    style={[styles.buttons, styles.buttonClose]} activeOpacity={0.5}
+                                    onPress={() => setModalVisible(!modalVisible)}>
+                                    <Text style={styles.textStyle}>Cancel</Text>
+                                </TouchableOpacity>
+                            </View>
+
                         </View>
                     </View>
                 </Modal>
@@ -117,7 +126,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: '#8bc34a',
-        paddingTop: 20
+        paddingTop: 60
     },
     mainHeading: {
         textAlign: 'center',
@@ -155,6 +164,9 @@ const styles = StyleSheet.create({
         flexDirection: 'row'
 
     },
+    btnsContainers: {
+        flexDirection: 'row'
+    },
     EDbutton: {
         textAlign: 'center',
         borderRadius: 10,
@@ -191,18 +203,21 @@ const styles = StyleSheet.create({
         shadowColor: '#000',
         shadowOffset: {
             width: 0,
-            height: 6,
+            height: 10,  // Height thoda badha do taake neeche ki taraf zyada shadow ho
         },
-        shadowOpacity: 0.4,
-        shadowRadius: 4,
-        elevation: 5,
+        shadowOpacity: 0.6,  // Shadow ko thoda dark karne ke liye opacity badhao
+        shadowRadius: 8,  // Radius ko increase karo taake shadow spread out ho
+        elevation: 10,
+
     },
     buttons: {
         borderRadius: 12,
         padding: 10,
         margin: 12,
-        width: 280,
+        width: 125,
         elevation: 2,
+        borderColor: 'yellow',
+        borderWidth: 1,
     },
     buttonOpen: {
         backgroundColor: '#F194FF',
