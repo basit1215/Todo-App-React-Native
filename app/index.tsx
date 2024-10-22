@@ -10,11 +10,17 @@ const index = () => {
     const [index, setIndex] = useState(0)
 
     const addTodo = () => {
+        if (input === null || input.trim() === "") {
+            alert('Please Enter Todo!')
+            return;
+        }
         console.log(input);
         todoAdd.push(input)
         setTodoAdd([...todoAdd])
         setInput('')
         console.log(todoAdd);
+
+
     }
 
     const deleteTodo = (index: number) => {
@@ -24,8 +30,12 @@ const index = () => {
     }
 
     const editTodo = (index: number) => {
-        console.log(updatedTodo , index)
-        todoAdd.splice(index , 1 , updatedTodo)
+        if (updatedTodo === null || updatedTodo.trim() === "") {
+            alert('Try Again!\nEnter new Edited Todo!')
+            return;
+        }
+        console.log(updatedTodo, index)
+        todoAdd.splice(index, 1, updatedTodo)
         setTodoAdd([...todoAdd])
         setModalVisible(false)
         setUpdatedTodo('')
@@ -44,29 +54,31 @@ const index = () => {
             />
 
             <TouchableOpacity style={styles.button} onPress={addTodo} activeOpacity={0.5}>
-                <Text>Add Todo</Text>
+                <Text style={styles.textsStyles}>Add Todo</Text>
             </TouchableOpacity>
 
             {todoAdd.length > 0 ? (<FlatList
                 data={todoAdd}
                 renderItem={({ item, index }) => (
                     <View style={styles.childContainer}>
-                        <Text>{item}</Text>
-                        <TouchableOpacity style={styles.button} onPress={() => {
-                            setModalVisible(true)
-                            setIndex(index)
-                        }} >
-                            <Text>Edit</Text>
-                        </TouchableOpacity>
+                        <Text style={styles.todoTitle}>{item}</Text>
+                        <View style={styles.btnsContainer}>
+                            <TouchableOpacity style={styles.EDbutton} activeOpacity={0.5} onPress={() => {
+                                setModalVisible(true)
+                                setIndex(index)
+                            }} >
+                                <Text style={styles.textStyles}>Edit</Text>
+                            </TouchableOpacity>
 
-                        <TouchableOpacity style={styles.button} onPress={() => deleteTodo(index)} >
-                            <Text>Delete</Text>
-                        </TouchableOpacity>
+                            <TouchableOpacity style={styles.EDbutton} onPress={() => deleteTodo(index)} activeOpacity={0.5} >
+                                <Text style={styles.textStyles}>Delete</Text>
+                            </TouchableOpacity>
+                        </View>
                     </View >
                 )}
-                keyExtractor={(item ,index) => index.toString()}
+                keyExtractor={(item, index) => index.toString()}
 
-            />) : (<Text>No Todo found!</Text>)}
+            />) : (<Text style={styles.notFound}>No Todo found!</Text>)}
 
             <View style={styles.centeredView}>
                 <Modal animationType="slide"
@@ -78,18 +90,18 @@ const index = () => {
                     }}>
                     <View style={styles.centeredView}>
                         <View style={styles.modalView}>
-                            <Text style={styles.modalText}>Update Todo</Text>
+                            <Text style={styles.modalText}>Edit Todo</Text>
                             <TextInput
                                 style={styles.updateInput}
                                 onChangeText={setUpdatedTodo}
                                 value={updatedTodo}
                                 placeholder='Enter Updated Todo...'
                             />
-                            <Pressable
-                                style={[styles.buttons, styles.buttonClose]}
-                                onPress={() =>editTodo(index)}>
+                            <TouchableOpacity
+                                style={[styles.buttons, styles.buttonClose]} activeOpacity={0.5}
+                                onPress={() => editTodo(index)}>
                                 <Text style={styles.textStyle}>Updated</Text>
-                            </Pressable>
+                            </TouchableOpacity>
                         </View>
                     </View>
                 </Modal>
@@ -127,7 +139,31 @@ const styles = StyleSheet.create({
         backgroundColor: '#cddc39',
         padding: 10,
         margin: 12,
-        borderRadius: 10
+        borderRadius: 10,
+        fontWeight: 'bold'
+    },
+    notFound: {
+        fontSize: 24,
+        alignItems: 'center',
+        justifyContent: 'center',
+        paddingVertical: 188,
+        textAlign: 'center',
+
+
+    },
+    btnsContainer: {
+        flexDirection: 'row'
+
+    },
+    EDbutton: {
+        textAlign: 'center',
+        borderRadius: 10,
+        padding: 10,
+        margin: 12,
+        color: 'white',
+        backgroundColor: '#cddc39',
+        flex: 1,
+
     },
     item: {
         backgroundColor: '#f9c2ff',
@@ -141,50 +177,82 @@ const styles = StyleSheet.create({
     centeredView: {
         flex: 1,
         justifyContent: 'center',
-        alignItems: 'center',
-        marginTop: 22,
+        margin: 2,
+        borderRadius: 20,
+        padding: 10,
     },
     modalView: {
-        margin: 20,
-        backgroundColor: 'white',
+        backgroundColor: '#eff986',
         borderRadius: 20,
-        padding: 35,
+        borderWidth: 1,
+        borderColor: 'black',
+        padding: 8,
         alignItems: 'center',
         shadowColor: '#000',
         shadowOffset: {
             width: 0,
-            height: 2,
+            height: 6,
         },
-        shadowOpacity: 0.25,
+        shadowOpacity: 0.4,
         shadowRadius: 4,
         elevation: 5,
     },
     buttons: {
-        borderRadius: 20,
+        borderRadius: 12,
         padding: 10,
+        margin: 12,
+        width: 280,
         elevation: 2,
     },
     buttonOpen: {
         backgroundColor: '#F194FF',
     },
     buttonClose: {
-        backgroundColor: '#2196F3',
+        backgroundColor: 'black',
     },
     textStyle: {
-        color: 'white',
+        color: '#cddc39',
         fontWeight: 'bold',
         textAlign: 'center',
+    },
+    textStyles: {
+        color: 'black',
+        fontWeight: 'bold',
+        textAlign: 'center',
+    },
+    textsStyles: {
+        fontWeight: 'bold',
     },
     modalText: {
         marginBottom: 15,
         textAlign: 'center',
+        fontWeight: 'bold',
+        fontSize: 16
     },
     updateInput: {
-        margin: 20,
-        width: 200,
+        width: 280,
         borderWidth: 1,
+        borderColor: 'yellow',
+        padding: 10,
+        margin: 12,
+        color: '#cddc39',
+        borderRadius: 12,
+        marginBottom: 16,
+        backgroundColor: 'black',
+
     },
     childContainer: {
+        backgroundColor: 'black',
+        padding: 10,
+        margin: 12,
+        borderRadius: 10,
+        color: 'white',
+    },
+    todoTitle: {
+        color: '#cddc39',
+        textAlign: 'center',
+        fontSize: 20,
+        paddingBottom: 15
 
     },
 })
